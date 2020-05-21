@@ -7,7 +7,7 @@
 #include <QPixmap>
 #include <QElapsedTimer>
 #include <QMovie>
-#include <Windows.h>
+//#include <Windows.h>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -131,6 +131,7 @@ void Widget::showFrom()
     //retranslateUi(MainWindow);
 
     //QMetaObject::connectSlotsByName(MainWindow);
+
 }
 void Widget::retranslateUi()
 {
@@ -188,13 +189,14 @@ void Widget::on_pushButton_clicked()
                 QLabel splashLabel(&splash);
                 QMovie splashGif(":/images/splash.gif");
                 splashLabel.setMovie(&splashGif);
+                this -> close();
                 splashGif.start();
                 splash.show();
                 splash.setCursor(Qt::BlankCursor);
                 for (int i = 0; i < 15000; i += splashGif.speed())
                 {
                     QCoreApplication::processEvents();
-                    Sleep(splashGif.speed() / 5);
+//                    Sleep(splashGif.speed() / 5);
                 }
 
 
@@ -254,5 +256,4 @@ void Widget::receive(QString name, QString pwd)
     lineEdit -> setText(name);
     lineEdit_2 -> setText(pwd);
 }
-
 

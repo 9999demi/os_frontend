@@ -17,22 +17,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     database.cpp \
+    logout.cpp \
     main.cpp \
     mainwindow.cpp \
     register.cpp \
+    shutdown.cpp \
+    start.cpp \
     user.cpp \
+    wallpaper.cpp \
     widget.cpp
 
 HEADERS += \
     database.h \
+    logout.h \
     mainwindow.h \
     register.h \
+    shutdown.h \
+    start.h \
     user.h \
+    wallpaper.h \
     widget.h
 
 FORMS += \
+    logout.ui \
     mainwindow.ui \
-    register.ui
+    register.ui \
+    shutdown.ui \
+    start.ui \
+    wallpaper.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

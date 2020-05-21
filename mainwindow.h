@@ -59,6 +59,12 @@ private slots:
     void updata_time();
     void exitb();
 
+    void menu_logout();
+
+    void menu_shutdown();
+
+    void change_wallpaper(int i);
+
 private:
     QLabel *pTimeLabel;
     QPushButton *App1;

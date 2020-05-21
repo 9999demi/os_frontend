@@ -47,6 +47,7 @@ private slots:
     void on_pushButton_clicked();
 
     void receive(QString name, QString pwd);
+
 };
 
 #endif // WIDGET_H

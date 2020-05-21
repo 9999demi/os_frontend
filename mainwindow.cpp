@@ -13,6 +13,13 @@
 #include <QMessageBox>                //标准对话框
 #include <QFileDialog>                //文件对话框
 
+#include "logout.h"
+#include "widget.h"
+#include "shutdown.h"
+#include "start.h"
+#include "wallpaper.h"
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -60,15 +67,21 @@ MainWindow::MainWindow(QWidget *parent)
       connect(aActionWallpaper,&QAction::triggered,
               [=]()
       {
-          QString path = QFileDialog::getOpenFileName(
-                      this,
-                      "open",
-                      "../",
-                      "souce(*.cpp *.h);;"
-                      "Text(*.txt);;"
-                      "all(*.*)" );
+//          QString path = QFileDialog::getOpenFileName(
+//                      this,
+//                      "open",
+//                      "../",
+//                      "souce(*.cpp *.h);;"
+//                      "Text(*.txt);;"
+//                      "all(*.*)" );
 
-          qDebug() << path;
+//          qDebug() << path;
+
+
+          // Function: change the wallpaper.
+          WallPaper w;
+          connect(&w, SIGNAL(choose_wallpaper(int)), this, SLOT(change_wallpaper(int)));
+          w.exec();
       }
               );
 
@@ -78,22 +91,35 @@ MainWindow::MainWindow(QWidget *parent)
       connect(logout,&QAction::triggered,
               [=]()
       {
-           QMessageBox::question(this,"question","Are you sure to log out your account?",
-                                 QMessageBox::Ok,QMessageBox::Cancel);     //question(父类,标题名，对话框内容）;
+//           QMessageBox::question(this,"question","Are you sure to log out your account?",
+//                                 QMessageBox::Ok,QMessageBox::Cancel);     //question(父类,标题名，对话框内容）;
+          LogOut l;
+          connect(&l, SIGNAL(close_main()), this, SLOT(menu_logout()));
+          l.exec();
       }
               );
 
+//      connect(logout, SIGNAL(triggered()), this, SLOT(menu_logout()) );
+
+
       QMenu *pMenuBarShutDown= new QMenu(QStringLiteral("Shut Down(&S)"));
       QAction *shutdown = pMenuBarShutDown->addAction("Shut down the system");
-//      connect(shutdown,SIGNAL(clicked()),this,SLOT(exitb()));
+      connect(shutdown,SIGNAL(clicked()),this,SLOT(exitb()));
       connect(shutdown,&QAction::triggered,
               [=]()
       {
-           QMessageBox::question(this,"question","Are you really sure to exit?",
-                                 QMessageBox::Yes,QMessageBox::Close);     //question(父类,标题名，对话框内容）;
-           exit(0);
+//           QMessageBox::question(this,"question","Are you really sure to exit?",
+//                                 QMessageBox::Yes,QMessageBox::Close);     //question(父类,标题名，对话框内容）;
+//           exit(0);
+          ShutDown s;
+          connect(&s, SIGNAL(shut_main()), this, SLOT(menu_shutdown()));
+          s.exec();
       }
               );
+
+//      connect(shutdown, SIGNAL(triggered()), this, SLOT(menu_shutdown()) );
+
+
       mBar->addMenu(pMenuBarAbout);
       mBar->addMenu(pMenuBarLogOut);
       mBar->addMenu(pMenuBarShutDown);
@@ -236,6 +262,7 @@ MainWindow::MainWindow(QWidget *parent)
            App1->setGeometry(QRect(850,80,100,100));
            App1->setFlat(true);
 
+
 }
 
 void MainWindow::MySlot(){
@@ -255,7 +282,41 @@ void MainWindow::exitb(){
         exit(0);
     }
 }
+
+void MainWindow::menu_logout()
+{
+//    LogOut l;
+//    l.exec();
+    this -> close();
+    Widget *w = new Widget;
+    w -> show();
+//    qDebug() << "yes" << endl;
+//    qDebug() << "ye" << endl;
+}
+
+
+void MainWindow::menu_shutdown()
+{
+    this -> close();
+    Start *s = new Start;
+    s -> show();
+}
+
+void MainWindow::change_wallpaper(int i)
+{
+    if (i == 0)
+    {
+        this->setStyleSheet("MainWindow{border-image: url(:/images/background.jpg);}");
+    }
+    if (i == 1)
+    {
+        this->setStyleSheet("MainWindow{border-image: url(:/images/Gluttonous Snake.jpg);}");
+    }
+}
+
 MainWindow::~MainWindow()
 {
 
 }
+
+
