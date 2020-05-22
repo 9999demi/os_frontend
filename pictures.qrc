@@ -3,5 +3,41 @@
         <file>images/background.jpg</file>
         <file>images/Gluttonous Snake.jpg</file>
         <file>images/splash.gif</file>
+        <file>images/1.png</file>
+        <file>images/App.png</file>
+        <file>images/App_calendar.png</file>
+        <file>images/App_chess.png</file>
+        <file>images/App_fish.png</file>
+        <file>images/App_map.png</file>
+        <file>images/App_snake.png</file>
+        <file>images/Appstore.png</file>
+        <file>images/background.png</file>
+        <file>images/blue.png</file>
+        <file>images/calendar_back.png</file>
+        <file>images/calendar.png</file>
+        <file>images/chess.jpeg</file>
+        <file>images/chess.png</file>
+        <file>images/dead.jpg</file>
+        <file>images/download.png</file>
+        <file>images/fishjoy.jpg</file>
+        <file>images/fishjoy.png</file>
+        <file>images/Game.png</file>
+        <file>images/Game2.png</file>
+        <file>images/Life.png</file>
+        <file>images/Life2.png</file>
+        <file>images/management_back.png</file>
+        <file>images/map_back.png</file>
+        <file>images/map.png</file>
+        <file>images/ok.png</file>
+        <file>images/ram.png</file>
+        <file>images/rom.png</file>
+        <file>images/rom_back.png</file>
+        <file>images/search_btn.png</file>
+        <file>images/snake_back.png</file>
+        <file>images/Snake.png</file>
+        <file>images/store_back.png</file>
+        <file>images/system.png</file>
+        <file>images/uninstall.png</file>
+        <file>images/User_logo.png</file>
     </qresource>
 </RCC>

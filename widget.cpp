@@ -30,7 +30,8 @@ void Widget::showFrom()
     if (this->objectName().isEmpty())
         this->setObjectName(QStringLiteral("MainWindow"));
     this->setWindowModality(Qt::NonModal);
-    this->resize(535, 357);
+//    this->resize(535, 357);
+    this->resize(1000, 708);
     this->setContextMenuPolicy(Qt::ActionsContextMenu);
     gridLayout = new QGridLayout(this);
     gridLayout->setSpacing(6);

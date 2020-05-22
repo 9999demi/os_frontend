@@ -16,23 +16,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    appstore.cpp \
+    calendar.cpp \
     database.cpp \
     logout.cpp \
     main.cpp \
     mainwindow.cpp \
+    management.cpp \
+    map.cpp \
+    ram.cpp \
     register.cpp \
+    rom.cpp \
     shutdown.cpp \
+    snake.cpp \
     start.cpp \
     user.cpp \
     wallpaper.cpp \
     widget.cpp
 
 HEADERS += \
+    appstore.h \
+    calendar.h \
     database.h \
     logout.h \
     mainwindow.h \
+    management.h \
+    map.h \
+    ram.h \
     register.h \
+    rom.h \
     shutdown.h \
+    snake.h \
     start.h \
     user.h \
     wallpaper.h \
