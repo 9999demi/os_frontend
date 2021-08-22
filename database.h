@@ -16,6 +16,14 @@ public:
 
     bool judge(QString name, QString password);
 
+    QString findGender(QString name);
+    QString findBirthday(QString name);
+    bool changePwd(QString name, QString old, QString newpwd);
+
+//    QString app;
+    QString getApp(QString name);
+    void updateApp(QString name, QString app);
+
 private:
 
     Database();

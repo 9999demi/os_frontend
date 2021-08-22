@@ -4,8 +4,7 @@
 class User
 {
 public:
-    User(QString name="", QString password="", QString sex="", QString birthday="");
-
+    User(QString name="", QString password="", QString sex="", QString birthday="", QString app="");
     QString name() const;
     void setName(const QString &name);
 
@@ -18,7 +17,10 @@ public:
     QString birthday() const;
     void setBirthday(const QString &birthday);
 
+    QString app() const;
+    void setApp(const QString &app);
 private:
+    QString app_;
     QString name_;
     QString password_;
     QString sex_;

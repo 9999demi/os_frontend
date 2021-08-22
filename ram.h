@@ -20,7 +20,6 @@
 #include <QPainter>
 #include <QProgressBar>
 
-
 class RAM : public QWidget
 {
     Q_OBJECT
@@ -53,6 +52,11 @@ private:
 signals:
 
 public slots:
+    void mem_info_snake(int data);
+    void mem_info_fish(int data);
+    void mem_info_chess(int data);
+    void mem_info_calendar(int data);
+    void mem_info_total(int data);
 };
 
 #endif // RAM_H

@@ -19,33 +19,33 @@ RAM::RAM(QWidget *parent) : QWidget(parent)
     RAM_bar->setGeometry(QRect(130,10,200,30));
     RAM_bar->setOrientation(Qt::Horizontal);
     RAM_bar->setMinimum(0);
-    RAM_bar->setMaximum(6000);//RAM value kb
-    RAM_bar->setValue(2589);
-    double progress = (RAM_bar->value() - RAM_bar->minimum()) * 100.0 / (RAM_bar->maximum() - RAM_bar->minimum());
+    RAM_bar->setMaximum(200000);//RAM value kb
+    RAM_bar->setValue(20307);
+//    double progress = (RAM_bar->value() - RAM_bar->minimum()) * 100.0 / (RAM_bar->maximum() - RAM_bar->minimum());
 
     RAM_per = new QLabel(this);
-    RAM_per->setText(QString::fromLocal8Bit("present occupied RAM is: %1%").arg(QString::number(progress,'f',1)));
+//    RAM_per->setText(QString::fromLocal8Bit("present occupied RAM is: %1%").arg(QString::number(progress,'f',1)));
     RAM_per->setGeometry(QRect(140,20,200,30));
     RAM_per->setStyleSheet("font-size:8px");
 
-    CPU_label = new QLabel(this);
-    CPU_label->setText("CPU Usage");
-    CPU_label->resize(120,30);
-    CPU_label->setStyleSheet("font-size:14px");
-    CPU_label->setGeometry(QRect(20,40,160,30));
+//    CPU_label = new QLabel(this);
+//    CPU_label->setText("CPU Usage");
+//    CPU_label->resize(120,30);
+//    CPU_label->setStyleSheet("font-size:14px");
+//    CPU_label->setGeometry(QRect(20,40,160,30));
 
-    CPU_bar = new QProgressBar(this);
-    CPU_bar->setGeometry(QRect(130,40,200,30));
-    CPU_bar->setOrientation(Qt::Horizontal);
-    CPU_bar->setMinimum(0);
-    CPU_bar->setMaximum(100);
-    CPU_bar->setValue(8);
-    double progress2 = (CPU_bar->value() - CPU_bar->minimum()) * 100.0 / (CPU_bar->maximum() - CPU_bar->minimum());
+//    CPU_bar = new QProgressBar(this);
+//    CPU_bar->setGeometry(QRect(130,40,200,30));
+//    CPU_bar->setOrientation(Qt::Horizontal);
+//    CPU_bar->setMinimum(0);
+//    CPU_bar->setMaximum(100);
+//    CPU_bar->setValue(8);
+//    double progress2 = (CPU_bar->value() - CPU_bar->minimum()) * 100.0 / (CPU_bar->maximum() - CPU_bar->minimum());
 
-    CPU_per = new QLabel(this);
-    CPU_per->setText(QString::fromLocal8Bit("present occupied CPU is: %1%").arg(QString::number(progress2,'f',1)));
-    CPU_per->setGeometry(QRect(140,50,200,30));
-    CPU_per->setStyleSheet("font-size:8px");
+//    CPU_per = new QLabel(this);
+//    CPU_per->setText(QString::fromLocal8Bit("present occupied CPU is: %1%").arg(QString::number(progress2,'f',1)));
+//    CPU_per->setGeometry(QRect(140,50,200,30));
+//    CPU_per->setStyleSheet("font-size:8px");
 
     calendar_btn = new QPushButton(this);
     calendar_btn->setIcon(QIcon(":/images/1.png"));
@@ -81,7 +81,7 @@ RAM::RAM(QWidget *parent) : QWidget(parent)
     fishjoy_label->setGeometry(QRect(60,150,120,30));
 
     dead_btn = new QPushButton(this);
-    dead_btn->setIcon(QIcon(":/dead.jpg"));
+    dead_btn->setIcon(QIcon(":/images/dead.jpg"));
     dead_btn->setIconSize(QSize(20,20));
     dead_btn->setGeometry(QRect(200,150,20,20));
     dead_btn->setFlat(true);
@@ -92,11 +92,11 @@ RAM::RAM(QWidget *parent) : QWidget(parent)
     snake_label->setGeometry(QRect(230,150,120,30));
 
     data1 = new QLabel(this);
-    data1->setText("15%");
+    data1->setText(" - ");
     data1->setStyleSheet("font-size:12px");
     data1->setGeometry(QRect(130,100,120,30));
     data2 = new QLabel(this);
-    data2->setText("23%");
+    data2->setText(" - ");
     data2->setStyleSheet("font-size:12px");
     data2->setGeometry(QRect(290,100,120,30));
     data3 = new QLabel(this);
@@ -107,4 +107,58 @@ RAM::RAM(QWidget *parent) : QWidget(parent)
     data4->setText(" - ");
     data4->setStyleSheet("font-size:12px");
     data4->setGeometry(QRect(290,150,120,30));
+}
+
+void RAM::mem_info_snake(int data){
+//    qDebug()<<data;
+
+    if(data == 0){
+        data4->setText(" - ");
+    }else{
+        QString tmp = QString::number(data)+" KB";
+
+        data4->setText(tmp);
+    }
+}
+
+void RAM::mem_info_fish(int data){
+//    qDebug()<<data;
+    if(data == 0){
+        data3->setText(" - ");
+    }else{
+        QString tmp = QString::number(data)+" KB";
+
+        data3->setText(tmp);
+    }
+}
+
+void RAM::mem_info_chess(int data){
+//    qDebug()<<data;
+    if(data == 0){
+        data2->setText(" - ");
+    }else{
+     QString tmp = QString::number(data)+" KB";
+
+     data2->setText(tmp);
+    }
+}
+
+void RAM::mem_info_calendar(int data){
+//    qDebug()<<data;
+    if(data == 0){
+        data1->setText(" - ");
+    }else{
+         QString tmp = QString::number(data)+" KB";
+
+        data1->setText(tmp);
+    }
+}
+
+void RAM::mem_info_total(int data){
+//    qDebug()<<data;
+    RAM_bar->setValue(data+20307);
+
+    double progress = (RAM_bar->value() - RAM_bar->minimum()) * 100.0 / (RAM_bar->maximum() - RAM_bar->minimum());
+    RAM_per->setText(QString::fromLocal8Bit("present occupied RAM is: %1%").arg(QString::number(progress,'f',1)));
+
 }

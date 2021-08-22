@@ -20,12 +20,25 @@
 #include "wallpaper.h"
 #include "ram.h"
 #include "rom.h"
+#include "account.h"
+#include "database.h"
+int snake_mem = 0;
+int fish_mem = 0;
+int chess_mem = 0;
+int calendar_mem = 0;
+int total_mem = 0;
 
-
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
+    connect(this, SIGNAL(send_memory_snake(int)), this, SLOT(receive_memory_snake(int)));
+    connect(this, SIGNAL(send_memory_fish(int)), this, SLOT(receive_memory_fish(int)));
+    connect(this, SIGNAL(send_memory_chess(int)), this, SLOT(receive_memory_chess(int)));
+    connect(this, SIGNAL(send_memory_calendar(int)), this, SLOT(receive_memory_calendar(int)));
+
     this->resize(1000, 708);
     this->setWindowTitle("Main Window");
     this->setStyleSheet("MainWindow{border-image: url(:/images/background.jpg);}");
@@ -43,16 +56,24 @@ MainWindow::MainWindow(QWidget *parent)
 //     pActionOpen->setIcon(QIcon(":/ReplicationTool/png/open.png"));
       aActionAccounts->setShortcut(Qt::CTRL | Qt::Key_A);
       pMenuBarAbout->addAction(aActionAccounts);
+      connect(aActionAccounts,&QAction::triggered,
+              [=]()
+      {
+          Account a;
+          a.showUserInfo(user);
+          a.exec();
+      });
 //      QAction *aActionCapacity = new QAction(QStringLiteral("Capacity"), this);
 //      aActionCapacity->setShortcut(Qt::CTRL | Qt::Key_C);
 //      pMenuBarAbout->addAction(aActionCapacity);
       pMenuBarAbout->addSeparator();
-      QAction *aActionCapacity = pMenuBarAbout->addAction("Capacity");
-      aActionCapacity->setShortcut(Qt::CTRL | Qt::Key_C);
+      QAction *aActionCapacity = pMenuBarAbout->addAction("RAM");
+      aActionCapacity->setShortcut(Qt::CTRL | Qt::Key_R);
       connect(aActionCapacity,&QAction::triggered,
               [=]()
       {
-           QMessageBox::about(this,"Capacity","ROM & RAM");     //about(父类,标题名，对话框内容）;
+          RAM_click();
+//           QMessageBox::about(this,"Capacity","ROM & RAM");     //about(父类,标题名，对话框内容）;
       }
               );
 //      QAction *aActionStorage = new QAction(QStringLiteral("Storage"), this);
@@ -63,7 +84,8 @@ MainWindow::MainWindow(QWidget *parent)
       connect(aActionStorage,&QAction::triggered,
               [=]()
       {
-           QMessageBox::about(this,"Storage","Image & Text");
+          ROM_click();
+//           QMessageBox::about(this,"Storage","Image & Text");
       }
               );
       pMenuBarAbout->addSeparator();
@@ -71,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
 //      aActionWallpaper->setShortcut(Qt::CTRL | Qt::Key_W);
 //      pMenuBarAbout->addAction(aActionWallpaper);
       QAction *aActionWallpaper = pMenuBarAbout->addAction("Wallpaper");
+      aActionWallpaper->setShortcut(Qt::CTRL | Qt::Key_W);
       connect(aActionWallpaper,&QAction::triggered,
               [=]()
       {
@@ -214,12 +237,14 @@ MainWindow::MainWindow(QWidget *parent)
            toolBar->addSeparator();
            toolBar->addAction(aActionCapacity);
            toolBar->addSeparator();
+           toolBar->addAction(aActionStorage);
+           toolBar->addSeparator();
            toolBar->addAction(aActionWallpaper);
             //添加小控件ce
-           QPushButton *b = new QPushButton(this);
-           b->setText("Calender");
-           toolBar->addWidget(b);
-           connect(b,&QPushButton::clicked,this,&MainWindow::MySlot);
+//           QPushButton *b = new QPushButton(this);
+//           b->setText("Calender");
+//           toolBar->addWidget(b);
+//           connect(b,&QPushButton::clicked,this,&MainWindow::MySlot);
 
     //状态栏
 //           QStatusBar *sBar = statusBar();
@@ -235,11 +260,12 @@ MainWindow::MainWindow(QWidget *parent)
            QLabel *pWelCome = new QLabel(QStringLiteral("   Come on let's fall in love......"));
            pStatusBar->addWidget(pWelCome);
 
-           QProgressBar * pProgressBar = new QProgressBar();
-           pProgressBar->setRange(0,100);
-           pProgressBar->setValue(20);
-           pProgressBar->setMaximumWidth(200);
-           pStatusBar->addPermanentWidget(pProgressBar);
+//           QProgressBar * pProgressBar = new QProgressBar();
+//           pProgressBar->setRange(0,100);
+//           pProgressBar->setValue(20);
+//           pProgressBar->setMaximumWidth(200);
+//           pStatusBar->addPermanentWidget(pProgressBar);
+
            pTimeLabel = new QLabel();
            pStatusBar->addPermanentWidget(pTimeLabel);
 
@@ -268,20 +294,21 @@ MainWindow::MainWindow(QWidget *parent)
            App1->setIconSize(QSize(100,100));
            App1->setGeometry(QRect(850,80,100,100));
            App1->setFlat(true);
+           App1->hide();
 
 
 // From Moniter package
-           ROM_btn = new QPushButton(this);
-           ROM_btn->setIcon(QIcon(":/images/rom.png"));
-           ROM_btn->setIconSize(QSize(65,29));
-           ROM_btn->setGeometry(QRect(0,0,65,29));
-           ROM_btn->setFlat(true);
+//           ROM_btn = new QPushButton(this);
+//           ROM_btn->setIcon(QIcon(":/images/rom.png"));
+//           ROM_btn->setIconSize(QSize(65,29));
+//           ROM_btn->setGeometry(QRect(0,0,65,29));
+//           ROM_btn->setFlat(true);
 
-           RAM_btn = new QPushButton(this);
-           RAM_btn->setIcon(QIcon(":/images/ram.png"));
-           RAM_btn->setIconSize(QSize(65,29));
-           RAM_btn->setGeometry(QRect(70,0,65,29));
-           RAM_btn->setFlat(true);
+//           RAM_btn = new QPushButton(this);
+//           RAM_btn->setIcon(QIcon(":/images/ram.png"));
+//           RAM_btn->setIconSize(QSize(65,29));
+//           RAM_btn->setGeometry(QRect(70,0,65,29));
+//           RAM_btn->setFlat(true);
 
            store = new QPushButton(this);
            store->setIcon(QIcon(":/images/Appstore.png"));
@@ -294,12 +321,14 @@ MainWindow::MainWindow(QWidget *parent)
            calendar->setIconSize(QSize(45,45));
            calendar->setGeometry(QRect(25,110,45,45));
            calendar->setFlat(true);
+           calendar->hide();
 
            snake = new QPushButton(this);
            snake->setIcon(QIcon(":/images/Snake.png"));
            snake->setIconSize(QSize(50,50));
            snake->setGeometry(QRect(23,170,50,50));
            snake->setFlat(true);
+           snake->hide();
 
            map = new QPushButton(this);
            map->setIcon(QIcon(":/images/map.png"));
@@ -322,15 +351,21 @@ MainWindow::MainWindow(QWidget *parent)
            fish->setFlat(true);
            fish->hide();
 
-           cal_place = 0;
-           snake_place = 1;
+           File_system = new QPushButton(this);
+           File_system->setIcon(QIcon(":/images/File.png"));
+           File_system->setIconSize(QSize(55,55));
+           File_system->setGeometry(QRect(100,42,55,55));
+           File_system->setFlat(true);
+
+           cal_place = -1;
+           snake_place = -1;
            map_place = -1;
            chess_place = -1;
            fish_place = -1;
 
            mem_arr = new int[5];
-           mem_arr[0] = 1;
-           mem_arr[1] = 1;
+           mem_arr[0] = 0;
+           mem_arr[1] = 0;
            mem_arr[2] = 0;
            mem_arr[3] = 0;
            mem_arr[4] = 0;
@@ -339,8 +374,23 @@ MainWindow::MainWindow(QWidget *parent)
            rom = new ROM();
 
            appstore = new Appstore();
-           this->connect(ROM_btn,SIGNAL(clicked()),this,SLOT(ROM_click()));
-           this->connect(RAM_btn,SIGNAL(clicked()),this,SLOT(RAM_click()));
+           file_manager = new FileManager();
+
+           connect(this, SIGNAL(send_to_ram_snake(int)), ram, SLOT(mem_info_snake(int)));
+           connect(this, SIGNAL(send_to_ram_fish(int)), ram, SLOT(mem_info_fish(int)));
+           connect(this, SIGNAL(send_to_ram_chess(int)), ram, SLOT(mem_info_chess(int)));
+           connect(this, SIGNAL(send_to_ram_calendar(int)), ram, SLOT(mem_info_calendar(int)));
+           connect(this, SIGNAL(send_to_ram_total(int)), ram, SLOT(mem_info_total(int)));
+
+
+//           this->connect(map, SIGNAL(clicked()), this, SLOT(map_clicked()));
+           this->connect(snake, SIGNAL(clicked()), this, SLOT(snake_clicked()));
+           this->connect(chess, SIGNAL(clicked()), this, SLOT(chess_clicked()));
+           this->connect(fish, SIGNAL(clicked()), this, SLOT(fish_clicked()));
+           this->connect(calendar, SIGNAL(clicked()), this, SLOT(calendar_clicked()));
+
+//           this->connect(aActionCapacity,SIGNAL(clicked()),this,SLOT(ROM_click()));
+//           this->connect(aActionStorage,SIGNAL(clicked()),this,SLOT(RAM_click()));
            this->connect(store,SIGNAL(clicked()),this,SLOT(store_click()));
            //download
            this->connect(appstore->map_status,SIGNAL(clicked()),this,SLOT(map_download()));
@@ -370,6 +420,9 @@ MainWindow::MainWindow(QWidget *parent)
            //Details
            this->connect(rom->Manage,SIGNAL(clicked()),this,SLOT(set_app_details()));
 
+           this->connect(File_system,SIGNAL(clicked()),this,SLOT(file_system_click()));
+           this->connect(map,SIGNAL(clicked()),this,SLOT(map_app_click()));
+           db = Database::getInstance();
 }
 
 void MainWindow::MySlot(){
@@ -414,22 +467,36 @@ void MainWindow::change_wallpaper(int i)
     if (i == 0)
     {
         this->setStyleSheet("MainWindow{border-image: url(:/images/background.jpg);}");
-    }
-    if (i == 1)
+    } else if (i == 1)
     {
         this->setStyleSheet("MainWindow{border-image: url(:/images/background.png);}");
+//    } else if (i == 2)
+//    {
+//        this->setStyleSheet("MainWindow{border-image: url(:/images/background.png);}");
+//    } else if (i == 3)
+//    {
+//        this->setStyleSheet("MainWindow{border-image: url(:/images/background.png);}");
+    }else{
+
     }
 }
 
 MainWindow::~MainWindow()
 {
-    delete ROM_btn;
-    delete RAM_btn;
+//    delete ROM_btn;
+//    delete RAM_btn;
 }
 
 
 
 // From Moniter Package
+
+void MainWindow::receiveUserName(QString name) {
+    appstore->user_name->setText(name);
+    user = name;
+    app = db -> getApp(user);
+    this -> displayApp(app);
+}
 
 void MainWindow::RAM_click(){
 //    ram = new RAM();
@@ -474,6 +541,10 @@ void MainWindow::map_download(){
         map->show();
     }
     map_place = place;
+    app.append('3');
+    db->updateApp(user, app);
+    appstore->Map_status_click();
+    appstore->Map_status_click2();
 }
 
 void MainWindow::chess_download(){
@@ -502,6 +573,10 @@ void MainWindow::chess_download(){
         chess->show();
     }
     chess_place = place;
+    app.append('4');
+    db->updateApp(user, app);
+    appstore->Chess_status_click();
+    appstore->Chess_status_click2();
 }
 
 void MainWindow::fish_download(){
@@ -530,6 +605,10 @@ void MainWindow::fish_download(){
         fish->show();
     }
     fish_place = place;
+    app.append('5');
+    db->updateApp(user, app);
+    appstore->Fish_status_click();
+    appstore->Fish_status_click2();
 }
 
 void MainWindow::cal_download(){
@@ -558,6 +637,10 @@ void MainWindow::cal_download(){
         calendar->show();
     }
     cal_place = place;
+    app.append('1');
+    db->updateApp(user, app);
+    appstore->Cal_status_click();
+    appstore->Cal_status_click2();
 }
 
 void MainWindow::snake_download(){
@@ -586,30 +669,44 @@ void MainWindow::snake_download(){
         snake->show();
     }
     snake_place = place;
+    app.append('2');
+    db->updateApp(user, app);
+    appstore->Snake_status_click();
+    appstore->Snake_status_click2();
 }
 
 void MainWindow::map_uninstall(){
     map->hide();
     mem_arr[map_place] = 0;
+    app.replace('3', "");
+    db->updateApp(user, app);
 }
 
 void MainWindow::cal_uninstall(){
     calendar->hide();
     mem_arr[cal_place] = 0;
+    app.replace('1', "");
+    db->updateApp(user, app);
 }
 
 void MainWindow::snake_uninstall(){
     snake->hide();
     mem_arr[snake_place] = 0;
+    app.replace('2', "");
+    db->updateApp(user, app);
 }
 
 void MainWindow::chess_uninstall(){
     chess->hide();
     mem_arr[chess_place] = 0;
+    app.replace('4', "");
+    db->updateApp(user, app);
 }
 void MainWindow::fish_uninstall(){
     fish->hide();
     mem_arr[fish_place] = 0;
+    app.replace('5', "");
+    db->updateApp(user, app);
 }
 
 int MainWindow::progress_len(){
@@ -657,5 +754,236 @@ double MainWindow::app_ROM(){
         }
     }
     return base;
+}
+
+void MainWindow::file_system_click(){
+    QFuture<void> f = QtConcurrent::run(run);
+}
+
+void MainWindow::map_app_click(){
+    map_app_UI = new map_app();
+    map_app_UI->show();
+}
+
+void MainWindow::displayApp(QString application)
+{
+    if (application.contains("0"))
+    {
+        //第一次
+        app = application.replace("0", "");
+        for (int i = 0; i < application.length(); i++)
+        {
+            showApp(application.at(i));
+//            app = app.right(app.length() - 1);
+        }
+        app = app.right(application.length() / 2 + 1);
+    } else
+    {
+        for (int i = 0; i < application.length(); i++)
+        {
+            showApp(application.at(i));
+//            app = app.right(app.length() - 1);
+        }
+        app = app.right(application.length());
+    }
+    db->updateApp(user, app);
+
+}
+
+void MainWindow::showApp(QString i)
+{
+    if (QString::compare(i, "1") == 0)
+    {
+        cal_download();
+    }
+    else if (QString::compare(i, "2") == 0)
+    {
+        snake_download();
+    }
+    else if (QString::compare(i, "3") == 0)
+    {
+        map_download();
+    }
+    else if (QString::compare(i, "4") == 0)
+    {
+        chess_download();
+    }
+    else if (QString::compare(i, "5") == 0)
+    {
+        fish_download();
+    }
+    else
+    {
+        return;
+    }
+}
+
+// calender 1
+// snake 2
+//map 3
+//chess 4
+//fish 5
+
+
+void MainWindow::snake_clicked()
+{
+    QProcess *snake = new QProcess;
+    QString cmdString = "D:\\packed_projects\\Snake.exe";
+
+    snake->setEnvironment(QProcess::systemEnvironment());
+    snake->setProcessChannelMode(QProcess::MergedChannels);
+
+    snake->start("cmd", QStringList()<<"/c"<<cmdString);
+
+    connect(snake, SIGNAL(readyReadStandardOutput()), this, SLOT(readOut_snake()));
+}
+
+void MainWindow::chess_clicked()
+{
+    QProcess *chess = new QProcess;
+    QString cmdString = "D:\\packed_projects\\Chinese_Chess.exe";
+
+    chess->setEnvironment(QProcess::systemEnvironment());
+    chess->setProcessChannelMode(QProcess::MergedChannels);
+
+    chess->start("cmd", QStringList()<<"/c"<<cmdString);
+
+    connect(chess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOut_chess()));
+}
+void MainWindow::fish_clicked()
+{
+    QProcess *fish = new QProcess;
+    QString cmdString = "D:\\packed_projects\\fishjoy.exe";
+
+    fish->setEnvironment(QProcess::systemEnvironment());
+    fish->setProcessChannelMode(QProcess::MergedChannels);
+
+    fish->start("cmd", QStringList()<<"/c"<<cmdString);
+
+    connect(fish, SIGNAL(readyReadStandardOutput()), this, SLOT(readOut_fish()));
+}
+void MainWindow::calendar_clicked()
+{
+    QProcess *calendar = new QProcess;
+    QString cmdString = "D:\\packed_projects\\calendarwidget.exe";
+
+    calendar->setEnvironment(QProcess::systemEnvironment());
+    calendar->setProcessChannelMode(QProcess::MergedChannels);
+
+    calendar->start("cmd", QStringList()<<"/c"<<cmdString);
+
+    connect(calendar, SIGNAL(readyReadStandardOutput()), this, SLOT(readOut_calendar()));
+}
+
+void MainWindow::readOut_snake(){
+    QProcess *myProcess = dynamic_cast<QProcess *>(sender());
+
+    QString memory_info = myProcess->readAllStandardOutput();
+    QString tmp;
+
+    for(int i = 0; i < memory_info.length(); i++){
+        if(memory_info[i] >= '0' && memory_info[i] <= '9'){
+            tmp.append(memory_info[i]);
+        }
+    }
+
+    int info = tmp.toInt();
+
+    emit send_memory_snake(info);
+
+    summation();
+
+//    qDebug()<<info;
+}
+
+void MainWindow::readOut_fish(){
+    QProcess *myProcess = dynamic_cast<QProcess *>(sender());
+
+    QString memory_info = myProcess->readAllStandardOutput();
+    QString tmp;
+    for(int i = 0; i < memory_info.length(); i++){
+        if(memory_info[i] >= '0' && memory_info[i] <= '9'){
+            tmp.append(memory_info[i]);
+        }
+    }
+
+    int info = tmp.toInt();
+
+    emit send_memory_fish(info);
+
+    summation();
+//    qDebug()<<info;
+}
+
+void MainWindow::readOut_chess(){
+    QProcess *myProcess = dynamic_cast<QProcess *>(sender());
+
+    QString memory_info = myProcess->readAllStandardOutput();
+    QString tmp;
+    for(int i = 0; i < memory_info.length(); i++){
+        if(memory_info[i] >= '0' && memory_info[i] <= '9'){
+            tmp.append(memory_info[i]);
+        }
+    }
+
+    int info = tmp.toInt();
+
+    emit send_memory_chess(info);
+
+    summation();
+//    qDebug()<<info;
+}
+
+void MainWindow::readOut_calendar(){
+    QProcess *myProcess = dynamic_cast<QProcess *>(sender());
+
+    QString memory_info = myProcess->readAllStandardOutput();
+    QString tmp;
+    for(int i = 0; i < memory_info.length(); i++){
+        if(memory_info[i] >= '0' && memory_info[i] <= '9'){
+            tmp.append(memory_info[i]);
+        }
+    }
+
+    int info = tmp.toInt();
+
+    emit send_memory_calendar(info);
+
+    summation();
+//    qDebug()<<info;
+}
+
+
+void MainWindow::receive_memory_snake(int data){
+    snake_mem = data;
+    emit send_to_ram_snake(snake_mem);
+//    qDebug()<<"snake from receive"<<"data: "<<data<<"\nmemory: "<<snake_mem<<endl;
+}
+
+void MainWindow::receive_memory_fish(int data){
+    fish_mem = data;
+    emit send_to_ram_fish(fish_mem);
+//    qDebug()<<"fish from receive"<<"data: "<<data<<"\nmemory: "<<fish_mem<<endl;
+}
+
+void MainWindow::receive_memory_chess(int data){
+    chess_mem = data;
+    emit send_to_ram_chess(chess_mem);
+//    qDebug()<<"chess from receive"<<"data: "<<data<<"\nmemory: "<<chess_mem<<endl;
+}
+
+void MainWindow::receive_memory_calendar(int data){
+    calendar_mem = data;
+    emit send_to_ram_calendar(calendar_mem);
+//    qDebug()<<"calendar from receive"<<"data: "<<data<<"\nmemory: "<<calendar_mem<<endl;
+}
+
+void MainWindow::summation(){
+    total_mem = snake_mem + fish_mem + chess_mem + calendar_mem; // assume the system will consume 20307 KB ram. not captured.
+    emit send_to_ram_total(total_mem);
+//    qDebug()<<total_mem;
+}
+int MainWindow::getMemory(){
+    return (snake_mem + fish_mem + chess_mem + calendar_mem);
 }
 

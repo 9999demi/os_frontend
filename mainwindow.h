@@ -51,11 +51,20 @@
 #include <QButtonGroup>
 #include <QKeyEvent>
 #include <QStyle>
+#include <QProcess>
+#include <QDebug>
+#include <QThread>
+#include <QString>
+#include <QtConcurrent>
 
 #include "ram.h"
 #include "rom.h"
 #include "appstore.h"
 #include "map.h"
+#include "filemanager.h"
+#include "map_app.h"
+#include "database.h"
+#include "file_run.h"
 
 class MainWindow : public QMainWindow
 {
@@ -67,8 +76,13 @@ public:
     ~MainWindow();
 
     void MySlot();
+    void summation();
+    int getMemory();
 
     Appstore *appstore;
+    FileManager *file_manager;
+    map_app *map_app_UI;
+
 
 private slots:
     void updata_time();
@@ -83,6 +97,25 @@ private slots:
     void ROM_click();
     void RAM_click();
     void store_click();
+
+    //to create QProcess objects
+//    void map_clicked();
+    void snake_clicked();
+    void chess_clicked();
+    void fish_clicked();
+    void calendar_clicked();
+
+    //Memory communications
+    void readOut_snake();
+    void readOut_fish();
+    void readOut_chess();
+    void readOut_calendar();
+
+    void receive_memory_snake(int data);
+    void receive_memory_fish(int data);
+    void receive_memory_chess(int data);
+    void receive_memory_calendar(int data);
+
     //App download
     void map_download();
     void chess_download();
@@ -99,10 +132,30 @@ private slots:
     void app_rom_change();
     //for details connection
     void set_app_details();
+    void file_system_click();
+    void receiveUserName(QString name);
+    void map_app_click();
+    void displayApp(QString application);
+    void showApp(QString i);
+
+signals:
+    void send_memory_snake(int data);
+    void send_memory_fish(int data);
+    void send_memory_chess(int data);
+    void send_memory_calendar(int data);
+
+    void send_to_ram_snake(int data);
+    void send_to_ram_fish(int data);
+    void send_to_ram_chess(int data);
+    void send_to_ram_calendar(int data);
+    void send_to_ram_total(int data);
 
 private:
+    QString app;
+    Database *db;
     QLabel *pTimeLabel;
     QPushButton *App1;
+    QPushButton *File_system;
 
     int cal_place;
     int map_place;
@@ -121,6 +174,7 @@ private:
     QPushButton *map;
     int progress_len();
     double app_ROM();
+    QString user;
 
 };
 

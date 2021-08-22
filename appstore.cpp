@@ -16,7 +16,6 @@ Appstore::Appstore(QWidget *parent) : QWidget(parent)
     User->setFlat(true);
 
     user_name = new QLabel(this);
-    user_name->setText("Kaikai");
     user_name->setGeometry(QRect(75,383,100,25));
 
     Downloaded_Apps = new QLabel(this);
@@ -48,29 +47,31 @@ Appstore::Appstore(QWidget *parent) : QWidget(parent)
     App_calendar = new QPushButton(this);
     App_calendar->setIcon(QIcon(":/images/App_calendar.png"));
     App_calendar->setIconSize(QSize(248,66));
-    App_calendar->setGeometry(QRect(220,30,248,66));
+    App_calendar->setGeometry(QRect(220,20,248,66));
     App_calendar->setFlat(true);
     App_calendar->hide();
 
     calendar_status = new QPushButton(this);
-    calendar_status->setIcon(QIcon(":/images/ok.png"));
+    calendar_status->setIcon(QIcon(":/images/download.png"));
     calendar_status->setIconSize(QSize(50,23));
-    calendar_status->setGeometry(QRect(520,45,50,23));
+    calendar_status->setGeometry(QRect(520,30,50,23));
     calendar_status->setFlat(true);
+    calendar_status->hide();
     calendar_status->hide();
 
     App_map = new QPushButton(this);
     App_map->setIcon(QIcon(":/images/App_map.png"));
     App_map->setIconSize(QSize(240,64));
-    App_map->setGeometry(QRect(220,136,240,64));
+    App_map->setGeometry(QRect(220,130,240,64));
     App_map->setFlat(true);
     App_map->hide();
 
     map_status = new QPushButton(this);
     map_status->setIcon(QIcon(":/images/download.png"));
     map_status->setIconSize(QSize(50,25));
-    map_status->setGeometry(QRect(520,151,50,25));
+    map_status->setGeometry(QRect(520,140,50,25));
     map_status->setFlat(true);
+    map_status->hide();
     map_status->hide();
 
     App_snake = new QPushButton(this);
@@ -81,7 +82,7 @@ Appstore::Appstore(QWidget *parent) : QWidget(parent)
 //    App_snake->hide();
 
     snake_status = new QPushButton(this);
-    snake_status->setIcon(QIcon(":/images/ok.png"));
+    snake_status->setIcon(QIcon(":/images/download.png"));
     snake_status->setIconSize(QSize(50,25));
     snake_status->setGeometry(QRect(520,30,50,25));
     snake_status->setFlat(true);
@@ -160,8 +161,8 @@ Appstore::Appstore(QWidget *parent) : QWidget(parent)
     fish_bar->hide();
 
     app_status_arr = new int[5];
-    app_status_arr[0] = 1;
-    app_status_arr[2] = 1;
+    app_status_arr[0] = 0;
+    app_status_arr[2] = 0;
     app_status_arr[1] = 0;
     app_status_arr[3] = 0;
     app_status_arr[4] = 0;

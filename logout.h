@@ -2,6 +2,8 @@
 #define LOGOUT_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 namespace Ui {
 class LogOut;
@@ -20,9 +22,14 @@ signals:
 
 private slots:
     void on_buttonBox_accepted();
+    void exitbutton();
+//    void logoutbutton();
 
 private:
-    Ui::LogOut *ui;
+    QLabel *ques;
+    QPushButton *button1;
+    QPushButton *button2;
+//    Ui::LogOut *ui;
 };
 
 #endif // LOGOUT_H

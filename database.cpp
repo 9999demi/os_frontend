@@ -9,15 +9,16 @@
 
 Database::Database()
 {
+
     // 1. judge the database exist or not
     if (!QSqlDatabase::contains("test"))
     {
         db_ = QSqlDatabase::addDatabase("QSQLITE", "test");
-        qDebug() << db_.connectionName();
+//        qDebug() << db_.connectionName();
 
         //set database name
-        db_.setDatabaseName("users.db");
-        qDebug() << db_.databaseName();
+        db_.setDatabaseName("3002.db");
+//        qDebug() << db_.databaseName();
 
     }
     else
@@ -28,16 +29,16 @@ Database::Database()
     // 2. open the database
     if (!db_.open())
     {
-        qDebug() << "open:" << db_.lastError().text();
+//        qDebug() << "open:" << db_.lastError().text();
         return;
     }
 
     // 3. create the database table
-    QString sql = "create table if not exists users(name varchar(30), password varchar(30), sex varchar(10), birthday varchar(20));";
+    QString sql = "create table if not exists users(name varchar(30), password varchar(30), sex varchar(10), birthday varchar(20),app varchar(15));";
     QSqlQuery query(db_);
     if (query.exec(sql))
     {
-        qDebug() << "create table successfully!";
+//        qDebug() << "create table successfully!";
     }
     db_.close();
 }
@@ -50,15 +51,16 @@ Database *Database::getInstance()
 
 bool Database::insert(User &user)
 {
-    QString sql = QString("insert into users values('%1','%2','%3','%4');")
+    QString sql = QString("insert into users values('%1','%2','%3','%4','%5');")
             .arg(user.name())
             .arg(user.password())
             .arg(user.sex())
-            .arg(user.birthday());
+            .arg(user.birthday())
+            .arg(user.app());
     // 1. open the database
     if (!db_.open())
     {
-        qDebug() << "open:" << db_.lastError().text();
+//        qDebug() << "open:" << db_.lastError().text();
         return false;
     }
 
@@ -66,7 +68,7 @@ bool Database::insert(User &user)
     QSqlQuery query(db_);
     if (!query.exec(sql))
     {
-        qDebug() << "insert:" << query.lastError().text();
+//        qDebug() << "insert:" << query.lastError().text();
         return false;
     }
 
@@ -82,7 +84,7 @@ bool Database::find(QString name)
     // 1. open the database
     if (!db_.open())
     {
-        qDebug() << "open:" << db_.lastError().text();
+//        qDebug() << "open:" << db_.lastError().text();
         exit(-1);
     }
 
@@ -113,7 +115,7 @@ bool Database::judge(QString name, QString password)
     // 1. open the database
     if (!db_.open())
     {
-        qDebug() << "open:" << db_.lastError().text();
+//        qDebug() << "open:" << db_.lastError().text();
         exit(-1);
     }
 
@@ -135,4 +137,153 @@ bool Database::judge(QString name, QString password)
     // 4. close the database
     db_.close();
     return true;
+}
+
+QString Database::findGender(QString name)
+{
+    QString sql = QString("select sex from users where name = :xxx;");
+
+    // 1. open the database
+    if (!db_.open())
+    {
+//        qDebug() << "open:" << db_.lastError().text();
+        exit(-1);
+    }
+
+    // 2. excute sql
+    QSqlQuery query(db_);
+    query.prepare(sql);
+    query.bindValue(":xxx", QVariant(name));
+    query.exec();
+
+    QString tem = "";
+    // 3. if search successfully:
+    if (query.next())
+    {
+        tem = query.value(0).toString();
+    }
+
+    // 4. close the database
+    db_.close();
+    return tem;
+}
+
+QString Database::findBirthday(QString name)
+{
+    QString sql = QString("select birthday from users where name = :xxx;");
+
+    // 1. open the database
+    if (!db_.open())
+    {
+//        qDebug() << "open:" << db_.lastError().text();
+        exit(-1);
+    }
+
+    // 2. excute sql
+    QSqlQuery query(db_);
+    query.prepare(sql);
+    query.bindValue(":xxx", QVariant(name));
+    query.exec();
+
+    QString tem = "";
+    // 3. if search successfully:
+    if (query.next())
+    {
+        tem = query.value(0).toString();
+    }
+
+    // 4. close the database
+    db_.close();
+    return tem;
+}
+
+bool Database::changePwd(QString name, QString old, QString newpwd)
+{
+    QString sql = QString("select name, password from users where name = :xxx;");
+
+    // 1. open the database
+    if (!db_.open())
+    {
+//        qDebug() << "open:" << db_.lastError().text();
+        exit(-1);
+    }
+
+    // 2. excute sql
+    QSqlQuery query(db_);
+    query.prepare(sql);
+    query.bindValue(":xxx", QVariant(name));
+    query.exec();
+
+    // 3. check the password
+    if (query.next())
+    {
+        if(!(old == query.value(1).toString()))
+        {
+            return false;
+        }
+    }
+
+    //4.update the password
+    QString sql1 = QString("update users set password = ? where name = ?");
+    QSqlQuery query1(db_);
+    query1.prepare(sql1);
+    query1.addBindValue(newpwd);
+    query1.addBindValue(name);
+    query1.exec();
+
+
+    // 5. close the database
+    db_.close();
+    return true;
+}
+
+QString Database::getApp(QString name)
+{
+    QString sql = QString("select app from users where name = :xxx;");
+
+    // 1. open the database
+    if (!db_.open())
+    {
+//        qDebug() << "open:" << db_.lastError().text();
+        exit(-1);
+    }
+
+    // 2. excute sql
+    QSqlQuery query(db_);
+    query.prepare(sql);
+    query.bindValue(":xxx", QVariant(name));
+    query.exec();
+
+    QString tem = "";
+    // 3. if search successfully:
+    if (query.next())
+    {
+        tem = query.value(0).toString();
+    }
+
+    // 4. close the database
+    db_.close();
+    return tem;
+}
+
+void Database::updateApp(QString name, QString app)
+{
+    QString sql = QString("update users set app = ? where name = ?");
+
+    // open the database
+    if (!db_.open())
+    {
+//        qDebug() << "open:" << db_.lastError().text();
+        exit(-1);
+    }
+
+    QSqlQuery query(db_);
+    query.prepare(sql);
+    query.addBindValue(app);
+    query.addBindValue(name);
+    query.exec();
+
+//    qDebug() << app;
+    // 5. close the database
+    db_.close();
 }

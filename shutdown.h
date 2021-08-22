@@ -2,6 +2,8 @@
 #define SHUTDOWN_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 namespace Ui {
 class ShutDown;
@@ -20,9 +22,13 @@ signals:
 
 private slots:
     void on_buttonBox_accepted();
+    void exitbutton();
 
 private:
-    Ui::ShutDown *ui;
+    QPushButton *button1;
+    QPushButton *button2;
+    QLabel *ques;
+//    Ui::ShutDown *ui;
 };
 
 #endif // SHUTDOWN_H

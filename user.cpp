@@ -1,7 +1,7 @@
 #include "user.h"
 
-User::User(QString name, QString password, QString sex, QString birthday)
-    : name_(name), password_(password), sex_(sex), birthday_(birthday)
+User::User(QString name, QString password, QString sex, QString birthday, QString app)
+    : name_(name), password_(password), sex_(sex), birthday_(birthday), app_(app)
 {
 
 }
@@ -45,4 +45,14 @@ void User::setSex(const QString &sex)
 void User::setBirthday(const QString &birthday)
 {
     birthday_ = birthday;
+}
+
+QString User::app() const
+{
+    return app_;
+}
+
+void User::setApp(const QString &app)
+{
+    app_ = app;
 }

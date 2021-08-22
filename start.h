@@ -2,6 +2,8 @@
 #define START_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 namespace Ui {
 class Start;
@@ -19,7 +21,10 @@ private slots:
     void on_pushButton_clicked();
 
 private:
-    Ui::Start *ui;
+    QPushButton *startbutton;
+    QLabel *tips1;
+    QLabel *tips2;
+//    Ui::Start *ui;
 };
 
 #endif // START_H

@@ -25,6 +25,7 @@ public:
        QSpacerItem *horizontalSpacer;
        QVBoxLayout *verticalLayout;
        QHBoxLayout *horizontalLayout;
+       QLabel *tips;
        QLabel *label;
        QLineEdit *lineEdit;
        QHBoxLayout *horizontalLayout_2;

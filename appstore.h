@@ -24,6 +24,8 @@
 #include "calendar.h"
 #include "map.h"
 #include "snake.h"
+#include "chess.h"
+#include "fishjoy.h"
 
 class Appstore : public QWidget
 {
@@ -68,6 +70,8 @@ private:
     Calendar *cal;
     Map *map;
     Snake *snake;
+    Fishjoy *fish;
+    Chess *chess_app;
 
 signals:
 

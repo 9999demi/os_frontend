@@ -39,5 +39,13 @@
         <file>images/system.png</file>
         <file>images/uninstall.png</file>
         <file>images/User_logo.png</file>
+        <file>images/back3.jpeg</file>
+        <file>images/File.png</file>
+        <file>images/background login.jpeg</file>
+        <file>images/background wallpaper.jpg</file>
+        <file>images/start_btn.png</file>
+        <file>images/map1.jpg</file>
+        <file>images/booting.gif</file>
+        <file>images/booting2.gif</file>
     </qresource>
 </RCC>

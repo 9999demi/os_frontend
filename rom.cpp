@@ -4,7 +4,7 @@ ROM::ROM(QWidget *parent) : QWidget(parent)
 {
     this->resize(450,138);
 //    this->setWindowIcon(QIcon(":/images/rom_back.png"));
-    this->setWindowTitle("Memory");
+    this->setWindowTitle("Storage");
     QPalette palette;
     palette.setBrush(QPalette::Background,QBrush(QPixmap(":/images/rom_back.png").scaled(this->size())));
     this->setPalette(palette);
@@ -19,7 +19,7 @@ ROM::ROM(QWidget *parent) : QWidget(parent)
     label2->setGeometry(27,96,40,20);
 
     label3 = new QLabel(this);
-    label3->setText("GB available (totally 6GB)");
+    label3->setText("GB available (of 6GB)");
     label3->setGeometry(120,40,180,20);
 
     memory = new QLabel(this);
@@ -61,7 +61,7 @@ ROM::ROM(QWidget *parent) : QWidget(parent)
 
     Manage = new QPushButton(this);
     Manage->setText("Details");
-    Manage->setGeometry(330,35,90,30);
+    Manage->setGeometry(350,35,90,30);
 
     Available = new QPushButton(this);
     Available->setText("Available");
@@ -87,8 +87,11 @@ ROM::ROM(QWidget *parent) : QWidget(parent)
     app_mem_arr[3] = 0;
     app_mem_arr[4] = 0;
 
+
     connect(Manage,SIGNAL(clicked()),this,SLOT(manage_click()));
     connect(Manage,SIGNAL(clicked()),this,SLOT(manage_click2()));
+//    connect(App,SIGNAL(clicked()),this,SLOT(manage_click()));
+//    connect(App,SIGNAL(clicked()),this,SLOT(manage_click2()));
 
 }
 

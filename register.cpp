@@ -10,8 +10,9 @@ Register::Register(QWidget *parent) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
-    ui -> comboBox -> addItem("Male");
-    ui -> comboBox -> addItem("Female");
+    this->setWindowTitle("Register");
+    ui-> comboBox -> addItem("Male");
+    ui-> comboBox -> addItem("Female");
 }
 
 Register::~Register()
@@ -35,7 +36,8 @@ void Register::on_buttonBox_accepted()
 
     if (!(name.isEmpty() || pwd.isEmpty()))
     {
-        User user(name, pwd, sex, birthday);
+        QString app = "012";
+        User user(name, pwd, sex, birthday, app);
         Database *db = Database::getInstance();
         if (!db -> find(name))
         {

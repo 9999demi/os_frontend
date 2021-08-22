@@ -16,14 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    account.cpp \
     appstore.cpp \
     calendar.cpp \
+    changepassword.cpp \
+    chess.cpp \
     database.cpp \
+    disk_operation.cpp \
+    file_run.cpp \
+    file_system.cpp \
+    filemanager.cpp \
+    filesystem.cpp \
+    fishjoy.cpp \
     logout.cpp \
     main.cpp \
     mainwindow.cpp \
     management.cpp \
     map.cpp \
+    map_app.cpp \
     ram.cpp \
     register.cpp \
     rom.cpp \
@@ -35,13 +45,23 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
+    account.h \
     appstore.h \
     calendar.h \
+    changepassword.h \
+    chess.h \
     database.h \
+    disk_operation.h \
+    file_run.h \
+    file_system.h \
+    filemanager.h \
+    filesystem.h \
+    fishjoy.h \
     logout.h \
     mainwindow.h \
     management.h \
     map.h \
+    map_app.h \
     ram.h \
     register.h \
     rom.h \
@@ -53,6 +73,10 @@ HEADERS += \
     widget.h
 
 FORMS += \
+    account.ui \
+    changepassword.ui \
+    filemanager.ui \
+    filesystem.ui \
     logout.ui \
     mainwindow.ui \
     register.ui \
@@ -67,3 +91,18 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     pictures.qrc
+
+LIBS += \
+    -lpsapi
+
+QT += concurrent
+
+QT += concurrent widgets
+CONFIG += console
+CONFIG -= app_bundle
+
+DISTFILES += \
+    Chinese_Chess.exe \
+    Snake.exe \
+    calendarwidget.exe \
+    fishjoy.exe
